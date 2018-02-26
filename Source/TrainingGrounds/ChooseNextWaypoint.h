@@ -15,6 +15,13 @@ class TRAININGGROUNDS_API UChooseNextWaypoint : public UBTTaskNode
 	GENERATED_BODY()
 	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
+
+protected:
+
+	// this shows up in our blackboard index
+	UPROPERTY(EditAnywhere, Category = "Blackboard")
+	struct FBlackboardKeySelector IndexKey;
 	
 	
 };
