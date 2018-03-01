@@ -21,5 +21,5 @@ public:
 private:
 	UPROPERTY(EditInstanceOnly, Category = "Patrol Route")
 	TArray<AActor*> PatrolPoints;
-
+	
 };
