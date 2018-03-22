@@ -6,6 +6,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
+#include "../weapons/Gun.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -45,11 +46,24 @@ void AFirstPersonCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
-	// TODO Attach gun to character mesh component
-	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
-	//FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-	
+
+	if (GunBluePrint == NULL) {
+		return;
+		UE_LOG(LogTemp, Warning, TEXT("Gun BP missing"));
+	}
+
+	Gun = GetWorld()->SpawnActor<AGun>(GunBluePrint);	
+	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+
+	Gun->AnimInstance = Mesh1P->GetAnimInstance();
+
+	if (EnableTouchscreenMovement(InputComponent) == false)
+	{ 
+	// Bind fire event
+	InputComponent->BindAction("Fire", IE_Pressed, Gun, &AGun::OnFire);
+	}
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 // Input
@@ -62,10 +76,7 @@ void AFirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	// Bind jump events
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-
-	// Bind fire event
-	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFirstPersonCharacter::OnFire);
-
+	
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
 
