@@ -50,6 +50,7 @@ protected:
 public:	
 
 	/** Fires a projectile. */
+	UFUNCTION(BluePrintCallable, Category = "Input")
 	void OnFire();
 
 	// Called every frame
