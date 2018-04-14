@@ -55,7 +55,7 @@ void AFirstPersonCharacter::BeginPlay()
 	Gun = GetWorld()->SpawnActor<AGun>(GunBluePrint);	
 	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 
-	Gun->AnimInstance = Mesh1P->GetAnimInstance();
+	Gun->AnimInstance1p = Mesh1P->GetAnimInstance();
 
 	if (EnableTouchscreenMovement(InputComponent) == false)
 	{ 
